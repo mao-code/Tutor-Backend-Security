@@ -1,4 +1,4 @@
-# Outline
+# :pushpin: Outline
 ### (For only basic NodeJS project. We will build another complete project in the future)
 1. ERD & DB
 2. NodeJS basic and connecting to MySQL
