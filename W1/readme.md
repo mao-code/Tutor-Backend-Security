@@ -18,6 +18,7 @@
     * save to dev dependency (sace-dev) 
     * npm run devStart
     * devStart in script
+3. mysql
 
 # Resources
 1. ERD & DB => my PPT

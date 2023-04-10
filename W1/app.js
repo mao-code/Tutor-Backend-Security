@@ -18,8 +18,9 @@ app.get('/', function (req, res) {
     });
 })
 
+// basically insert some roles on DB
 app.get('/db', async (req, res) => {
-    var sql = "SELECT * FROM Restaurant";
+    var sql = "SELECT * FROM Role";
     mysql.query(sql, (err, rows) => {
         res.send({
             rows: rows

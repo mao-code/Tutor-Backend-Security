@@ -3,7 +3,7 @@ var mysql = require('mysql');
 const host = "localhost";
 const user = "root";
 const password = "";
-const db = "trivagogoro_db";
+const db = "BackendSecurity";
 
 var conn = mysql.createConnection({
     host: host,
