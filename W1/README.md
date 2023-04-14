@@ -19,7 +19,7 @@
     * save to dev dependency (sace-dev) 
     * npm run devStart
     * devStart in script
-3. mysql
+3. mysql (with node native promisify)
 
 # Resources
 1. ERD & DB => My PPT
@@ -30,6 +30,7 @@
     * NodeJS to MySQL
         * [W3School tutorial](https://www.w3schools.com/nodejs/nodejs_mysql.asp)
         * [Article tutorail](https://codeforgeek.com/nodejs-mysql-tutorial/) 
+        * [NodeJS MySQL with promise](https://stackoverflow.com/questions/44004418/node-js-async-await-using-with-mysql)
     * [Project setup and express](https://levelup.gitconnected.com/set-up-and-run-a-simple-node-server-project-38b403a3dc09)
 
 # Code

@@ -37,6 +37,7 @@ alt="salt-hash"></img>
 
 ## JWT
 
+
 <img
 width="600px"
 src="./images/JWT.JPG"
@@ -46,3 +47,4 @@ alt="salt-hash"></img>
 
 # Resources
 * [Bcrypt tutorial](https://blog.logrocket.com/password-hashing-node-js-bcrypt/)
+* [JWT website](https://jwt.io/)

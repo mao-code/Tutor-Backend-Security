@@ -1,4 +1,5 @@
-var mysql = require('mysql');
+const mysql = require('mysql');
+const util = require('util'); // use promisify for mysql
 
 const host = "localhost";
 const user = "root";
@@ -22,5 +23,6 @@ conn.connect(function(err) {
 
 // export objects
 module.exports = {
-    mysql: conn
+    mysql: conn,
+    mysqlQuery: util.promisify(conn.query).bind(conn) // node native promisify (more readable)
 };
