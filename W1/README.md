@@ -19,7 +19,9 @@
     * save to dev dependency (sace-dev) 
     * npm run devStart
     * devStart in script
-3. mysql (with node native promisify)
+3. dotenv
+    * for environment variables settings
+4. mysql (with node native promisify)
 
 # Resources
 1. ERD & DB => My PPT

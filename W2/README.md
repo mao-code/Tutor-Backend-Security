@@ -6,6 +6,7 @@
 
 # Download Packages
 1. bcrypt
+2. jsonwebtoken
 
 # :pencil: Explaination
 ## Password Hash Salting
@@ -29,22 +30,61 @@
 * Compare the hashed values to authenticate users without the need to store the plaintext password itself.
 
 <img
-width="600px"
+width="500px"
 src="./images/salt-hash.png"
 alt="salt-hash"></img>
 
 ---
 
-## JWT
-
+## JWT (JSON Web Token)
+* JWTs can be used to authenticate and authorize users and securely transmit information between parties.
+* A JWT is made up of <u>three parts: a header, a payload, and a signature.</u> </br>
+Here's an example JWT: </br>
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.
+SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+```
+* The header contains metadata about the JWT, such as the algorithm used to sign the token. 
+* The payload contains the actual data being transmitted, such as user ID, username, or email address. 
+* The signature is used to verify the integrity of the JWT and ensure that the token has not been tampered with.
+* The structure of JWT and the transmit flow are shown below.
 
 <img
-width="600px"
+width="400px"
 src="./images/JWT.JPG"
-alt="salt-hash"></img>
+alt="jwt"></img>
 
 ## AccessToken and RefreshToken
+### AccessToken
+* <u>An access token is a type of token that is used to grant access to a protected resource, such as an API endpoint or a web page.</u>
+* Access tokens are typically short-lived, meaning that they expire after a certain amount of time (e.g., 1 hour).
+
+### RefreshToken
+* <u>A refresh token is a type of token that is used to obtain a new access token after the original access token has expired.</u>
+* Refresh tokens are typically long-lived, meaning that they can be used to obtain new access tokens for an extended period of time (e.g., 30 days).
+
+**The flow of using AccessToken and RefreshToken is shown below:**
+<img
+width="500px"
+src="./images/ACT-RFT.png"
+alt="act-rft"></img>
+
+## Authentication & Authorization
+### Authentication
+* Authentication is the process of verifying a user's identification through the acquisition of credentials and using those credentials to confirm the user's identity. 
+* The authorization process begins if the credentials are legitimate. 
+* The authorization process always follows the authentication procedure.
+
+### Authorization
+* Authorization is the process of allowing authenticated users access to resources by determining whether they have system access permissions. 
+* By giving or denying specific licenses to an authenticated user, authorization enables you to control access privileges.
+
+---
+
+## RBAC
 
 # Resources
 * [Bcrypt tutorial](https://blog.logrocket.com/password-hashing-node-js-bcrypt/)
 * [JWT website](https://jwt.io/)
+* [NodeJS JWT tutorial](https://www.section.io/engineering-education/how-to-build-authentication-api-with-jwt-token-in-nodejs/)

@@ -8,6 +8,9 @@ const { mysql, mysqlQuery } = require("./db/mysql.js")
 // bcrpyt
 const bcrypt = require("bcrypt")
 
+// dotenv
+require('dotenv').config()
+
 // models
 const Response = require("./models/Response.js");
 
@@ -105,6 +108,23 @@ app.post('/signup', async (req, res) => {
         await mysqlQuery(sqlUserCredential);
 
         const response = new Response(200, true, "Sign up successfully!", null);
+        response.send(res);
+
+    }catch(err){
+        console.error(err.message);
+
+        const response = new Response(500, false, err.message, null);
+        response.send(res);
+    }
+});
+
+app.post('/signin', async (req, res) => {
+    try{
+        var key =  process.env.TOKEN_KEY;
+      
+        const response = new Response(200, true, "Sign in successfully!", {
+            
+        });
         response.send(res);
 
     }catch(err){
