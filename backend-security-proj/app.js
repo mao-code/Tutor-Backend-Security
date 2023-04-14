@@ -72,7 +72,7 @@ app.post('/signup', async (req, res) => {
         const response = new Response(500, false, err.message, null);
         response.send(res);
     }
-})
+});
 
 // launch
 app.listen(port, () => {

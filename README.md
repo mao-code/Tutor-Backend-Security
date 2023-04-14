@@ -9,7 +9,7 @@
 * ERD, DB, NodeJS
 
 ## W2 (TBA)
-* Password salting and encryption
+* Password hash salting
 * JWT
 * RBAC
 
