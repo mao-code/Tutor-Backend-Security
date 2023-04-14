@@ -25,15 +25,12 @@
 1. ERD & DB => My PPT
 2. NodeJS setup and DB connection
     * My CC side project
-    * Full tutorial(W3School): 
-        * https://www.w3schools.com/nodejs/default.asp
-    * Express: 
-        * https://www.tutorialspoint.com/nodejs/nodejs_express_framework.htm
+    * [Full tutorial(W3School)](https://www.w3schools.com/nodejs/default.asp)
+    * [Express tutorial](https://www.tutorialspoint.com/nodejs/nodejs_express_framework.htm)
     * NodeJS to MySQL
-        * https://www.w3schools.com/nodejs/nodejs_mysql.asp
-        * https://codeforgeek.com/nodejs-mysql-tutorial/
-    * Project setup and express: 
-        * https://levelup.gitconnected.com/set-up-and-run-a-simple-node-server-project-38b403a3dc09
+        * [W3School tutorial](https://www.w3schools.com/nodejs/nodejs_mysql.asp)
+        * [Article tutorail](https://codeforgeek.com/nodejs-mysql-tutorial/) 
+    * [Project setup and express](https://levelup.gitconnected.com/set-up-and-run-a-simple-node-server-project-38b403a3dc09)
 
 # Code
 Code is in "backend-security-proj" folder

@@ -20,4 +20,5 @@
 
 ## W4 (TBA)
 * Combine all the security function
+* Improve structure with MVCS structure and apply router
 * Description of the project

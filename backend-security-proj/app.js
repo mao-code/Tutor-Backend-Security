@@ -1,9 +1,15 @@
-// mysql connection
-var { mysql } = require("./db/mysql.js")
-
 // express app
-var express = require('express');
-var app = express();
+const express = require('express');
+const app = express();
+
+// mysql connection
+const { mysql } = require("./db/mysql.js")
+
+// bcrpyt
+const bcrypt = require("bcrypt")
+
+// models
+const Response = require("./models/Response.js");
 
 const port = process.env.PORT || 3000;
 
@@ -16,10 +22,10 @@ app.get('/', function (req, res) {
     return res.send({
         message: 'Hello World'
     });
-})
+});
 
-// basically insert some roles on DB
-app.get('/db', async (req, res) => {
+// testing DB
+app.get('/testing/db', async (req, res) => {
     var sql = "SELECT * FROM Role";
     mysql.query(sql, (err, rows) => {
         res.send({
@@ -27,8 +33,48 @@ app.get('/db', async (req, res) => {
         });
         mysql.end();
     });
+});
+
+app.post('/salting', async (req, res) => {
+    try{
+        const { password } = req.body; // deconstructing assignment
+        const saltRounds = 10; // for slow hashing
+
+        // apply the hash function multiple times(generate a new salt value for each round)
+        const salt = await bcrypt.genSalt(saltRounds);
+        console.log('Salt: ', salt);
+            
+        const hashedPassword = await bcrypt.hash(password, salt);
+        console.log('Hash: ', hashedPassword);
+        // information: [algorithm]$[cost]$[salt][hash]
+
+        const response = new Response(200, true, 'salting password!', {
+            salt: salt,
+            hash: hashedPassword
+        });
+        response.send(res);
+
+    }catch(err){
+        console.error(err.message);
+
+        const response = new Response(500, false, err.message, null);
+        response.send(res);
+    }
+});
+
+app.post('/signup', async (req, res) => {
+    try{
+        const { account, password, name, gender, age, role } = req.body;
+
+    }catch(err){
+        console.error(err.message);
+
+        const response = new Response(500, false, err.message, null);
+        response.send(res);
+    }
 })
 
+// launch
 app.listen(port, () => {
     console.log("Server is up on port " + port);
 });
