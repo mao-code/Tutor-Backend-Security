@@ -11,7 +11,8 @@
 ## W2 (TBA)
 * Password hash salting
 * JWT
-* RBAC
+* RBAC concept
+* Build simple frontend
 
 ## W3 (TBA)
 * Pratice JWT (Access & Refresh token)
