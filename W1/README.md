@@ -33,5 +33,3 @@
         * [NodeJS MySQL with promise](https://stackoverflow.com/questions/44004418/node-js-async-await-using-with-mysql)
     * [Project setup and express](https://levelup.gitconnected.com/set-up-and-run-a-simple-node-server-project-38b403a3dc09)
 
-# Code
-Code is in "backend-security-proj" folder

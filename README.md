@@ -1,4 +1,6 @@
 # :closed_lock_with_key: Backend Basic Security
+Introduction and practice to basic backend security. Contents include JWT, Password Hashing, RBAC, etc.
+We will build a backend APP for security practicing and a simple frontend to simulate the client side.
 * JWT
 * Password Salting and Encryption
 * RBAC
@@ -8,7 +10,7 @@
 ## W1
 * ERD, DB, NodeJS
 
-## W2 (TBA)
+## W2
 * Password hash salting
 * JWT
 * RBAC concept
@@ -23,3 +25,7 @@
 * Combine all the security function
 * Improve structure with MVCS structure and apply router
 * Description of the project
+
+# Code
+* Backend code is in "backend-security-proj" folder
+* Frontend code is in "simple-frontend" folder
