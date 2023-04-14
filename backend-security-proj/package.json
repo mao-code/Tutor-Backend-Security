@@ -1,5 +1,5 @@
 {
-  "name": "w1",
+  "name": "backend-security-project",
   "version": "1.0.0",
   "description": "1. ERD & DB 2. NodeJS basic and connecting to MySQL     1. Build MySQL: Download **XAMPP** and build an DB     2. Build NodeJS: Download **Node** 3. ExpressJS to build an simple API",
   "main": "app.js",

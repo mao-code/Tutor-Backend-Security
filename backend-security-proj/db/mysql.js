@@ -13,8 +13,11 @@ var conn = mysql.createConnection({
 });
   
 conn.connect(function(err) {
-    if (err) throw err;
-    console.log(`MySQL Connected! DB: ${db}`);
+    if (err) {
+        throw err;
+    }else{
+        console.log(`MySQL Connected! DB: ${db}`);
+    }
 });
 
 // export objects

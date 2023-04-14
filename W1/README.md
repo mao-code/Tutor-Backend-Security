@@ -34,3 +34,6 @@
         * https://codeforgeek.com/nodejs-mysql-tutorial/
     * Project setup and express: 
         * https://levelup.gitconnected.com/set-up-and-run-a-simple-node-server-project-38b403a3dc09
+
+# Code
+Code is in "backend-security-proj" folder
