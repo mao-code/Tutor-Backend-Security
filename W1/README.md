@@ -23,7 +23,7 @@
     * for environment variables settings
 4. mysql (with node native promisify)
 
-# Resources
+# :books: Resources
 1. ERD & DB => My PPT
 2. NodeJS setup and DB connection
     * My CC side project

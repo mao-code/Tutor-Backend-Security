@@ -67,10 +67,12 @@ alt="jwt"></img>
 * Refresh tokens are typically long-lived, meaning that they can be used to obtain new access tokens for an extended period of time (e.g., 30 days).
 
 ## Verify Token (using middleware)
+* We will use NodeJS middleware to do authentication (verify token before API action)
 
 ## Refresh Token Action
 
 **The flow of using AccessToken and RefreshToken is shown below:**
+
 <img
 width="500px"
 src="./images/ACT-RFT.png"
@@ -90,7 +92,7 @@ alt="act-rft"></img>
 
 ## RBAC
 
-# Resources
+# :books: Resources
 * [mysql2](https://openbase.com/js/mysql2)
 * [Bcrypt tutorial](https://blog.logrocket.com/password-hashing-node-js-bcrypt/)
 * [JWT website](https://jwt.io/)
