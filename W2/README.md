@@ -5,8 +5,9 @@
 3. RBAC concept & implementation via middleware
 
 # Download Packages
-1. bcrypt
-2. jsonwebtoken
+1. mysql2 (for connection pooling)
+2. bcrypt
+3. jsonwebtoken
 
 # :pencil: Explaination
 ## Password Hash Salting
@@ -46,9 +47,10 @@ eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.
 SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
 ```
 * The header contains metadata about the JWT, such as the algorithm used to sign the token. 
-* The payload contains the actual data being transmitted, such as user ID, username, or email address. 
+* The payload contains the actual data being transmitted, such as user ID, username, or email address. (<u>We don't store sensitive information here.</u>)
 * The signature is used to verify the integrity of the JWT and ensure that the token has not been tampered with.
-* The structure of JWT and the transmit flow are shown below.
+
+**The structure of JWT and the transmit flow are shown below.**
 
 <img
 width="400px"
@@ -63,6 +65,10 @@ alt="jwt"></img>
 ### RefreshToken
 * <u>A refresh token is a type of token that is used to obtain a new access token after the original access token has expired.</u>
 * Refresh tokens are typically long-lived, meaning that they can be used to obtain new access tokens for an extended period of time (e.g., 30 days).
+
+## Verify Token (using middleware)
+
+## Refresh Token Action
 
 **The flow of using AccessToken and RefreshToken is shown below:**
 <img
@@ -85,6 +91,7 @@ alt="act-rft"></img>
 ## RBAC
 
 # Resources
+* [mysql2](https://openbase.com/js/mysql2)
 * [Bcrypt tutorial](https://blog.logrocket.com/password-hashing-node-js-bcrypt/)
 * [JWT website](https://jwt.io/)
 * [NodeJS JWT tutorial](https://www.section.io/engineering-education/how-to-build-authentication-api-with-jwt-token-in-nodejs/)

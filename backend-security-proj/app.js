@@ -3,10 +3,13 @@ const express = require('express');
 const app = express();
 
 // mysql connection
-const { mysql, mysqlQuery } = require("./db/mysql.js")
+const { mysql } = require("./db/mysql.js")
 
 // bcrpyt
 const bcrypt = require("bcrypt")
+
+// jwt
+const jwt = require("jsonwebtoken");
 
 // dotenv
 require('dotenv').config()
@@ -18,6 +21,8 @@ const port = process.env.PORT || 3000;
 
 // automatically parse incoming JSON into JS object which you can access on req.body
 app.use(express.json());
+
+// Note: We skip the data validation here.
 
 app.get('/', function (req, res) {
     // return will terminate all the function
@@ -31,16 +36,8 @@ app.get('/', function (req, res) {
 app.get('/testing/db', async (req, res) => {
     var sql = "SELECT * FROM Role";
 
-    // callback approach
-    // mysql.query(sql, (err, rows) => {
-    //     res.send({
-    //         rows: rows
-    //     });
-    //     mysql.end();
-    // });
-
     // node native promisify (more readable)
-    var data = await mysqlQuery(sql);
+    var data = await mysql.query(sql);
     mysql.end(); // will close the whole connection
 
     res.send({
@@ -77,7 +74,6 @@ app.post('/salting', async (req, res) => {
 
 app.post('/signup', async (req, res) => {
     try{
-        // we skip the data validation here
         const { account, password, name, gender, age, role } = req.body;
         
         // hash salting password
@@ -90,7 +86,7 @@ app.post('/signup', async (req, res) => {
         SELECT id 
         FROM Role
         WHERE name = '${role}';`;
-        const roleId = (await mysqlQuery(sqlRole))[0].id;
+        const roleId = (await mysql.query(sqlRole))[0].id;
 
         // generate refreshToken (later)
         const refreshToken = "test";
@@ -99,13 +95,13 @@ app.post('/signup', async (req, res) => {
         const sqlUser = `
         INSERT INTO User(name, gender, age, roleId)
         VALUES('${name}', '${gender}', ${age}, '${roleId}');`; 
-        let userId = (await mysqlQuery(sqlUser)).insertId; // get userid
+        let userId = (await mysql.query(sqlUser)).insertId; // get userid
 
         // insert user credential
         const sqlUserCredential = `
         INSERT INTO UserCredential(account, password, salt, refreshToken, userId)
         VALUES('${account}', '${hashedPassword}', '${salt}', '${refreshToken}', '${userId}');`; 
-        await mysqlQuery(sqlUserCredential);
+        await mysql.query(sqlUserCredential);
 
         const response = new Response(200, true, "Sign up successfully!", null);
         response.send(res);
@@ -120,18 +116,52 @@ app.post('/signup', async (req, res) => {
 
 app.post('/signin', async (req, res) => {
     try{
-        var key =  process.env.TOKEN_KEY;
-      
+        const { account, password } = req.body;
+
+        // find user
+        var sql = `SELECT * FROM UserCredential WHERE account='${account}'`;
+        var [rows, fields] = await mysql.query(sql);
+
+        // check user 
+        if(rows.length == 0)
+        {
+            const response = new Response(404, false, "Cannot find user!", null);
+            return response.send(res); // return to terminate the request
+        }
+        userCredential = rows[0];
+
+        //compare hashed password
+        if(!(await bcrypt.compare(password, userCredential.password)))
+        {
+            const response = new Response(403, false, "Invalid password!", null);
+            return response.send(res);
+        }
+
+        // get jwt secret for signature
+        var secret =  process.env.JWT_SECRET;
+
+        // generate token (temporarily)
+        const token = jwt.sign(
+            {
+                userId: userCredential.userId,
+                account: userCredential.account
+            },
+            secret,
+            {
+                expiresIn: "5m" 
+            }
+        );
+
         const response = new Response(200, true, "Sign in successfully!", {
-            
+            token: token
         });
-        response.send(res);
+        return response.send(res);
 
     }catch(err){
         console.error(err.message);
 
         const response = new Response(500, false, err.message, null);
-        response.send(res);
+        return response.send(res);
     }
 });
 
