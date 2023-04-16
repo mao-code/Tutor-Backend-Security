@@ -36,6 +36,17 @@ src="./images/salt-hash.png"
 alt="salt-hash"></img>
 
 ---
+## Authentication & Authorization
+### Authentication
+* Authentication is the process of verifying a user's identification through the acquisition of credentials and using those credentials to confirm the user's identity. 
+* The authorization process begins if the credentials are legitimate. 
+* The authorization process always follows the authentication procedure.
+
+### Authorization
+* Authorization is the process of allowing authenticated users access to resources by determining whether they have system access permissions. 
+* By giving or denying specific licenses to an authenticated user, authorization enables you to control access privileges.
+
+---
 
 ## JWT (JSON Web Token)
 * JWTs can be used to authenticate and authorize users and securely transmit information between parties.
@@ -57,6 +68,12 @@ width="400px"
 src="./images/JWT.JPG"
 alt="jwt"></img>
 
+## Verify Token (using middleware)
+* We will use NodeJS middleware to do authentication (verify token before API action)
+* Middleware:
+  * Middleware is software that sits between different components of a system and facilitates communication and data exchange between them.
+  * In Node.js, middleware refers to functions that are executed in the middle of the request-response cycle.
+
 ## AccessToken and RefreshToken
 ### AccessToken
 * <u>An access token is a type of token that is used to grant access to a protected resource, such as an API endpoint or a web page.</u>
@@ -66,9 +83,6 @@ alt="jwt"></img>
 * <u>A refresh token is a type of token that is used to obtain a new access token after the original access token has expired.</u>
 * Refresh tokens are typically long-lived, meaning that they can be used to obtain new access tokens for an extended period of time (e.g., 30 days).
 
-## Verify Token (using middleware)
-* We will use NodeJS middleware to do authentication (verify token before API action)
-
 ## Refresh Token Action
 
 **The flow of using AccessToken and RefreshToken is shown below:**
@@ -77,16 +91,6 @@ alt="jwt"></img>
 width="500px"
 src="./images/ACT-RFT.png"
 alt="act-rft"></img>
-
-## Authentication & Authorization
-### Authentication
-* Authentication is the process of verifying a user's identification through the acquisition of credentials and using those credentials to confirm the user's identity. 
-* The authorization process begins if the credentials are legitimate. 
-* The authorization process always follows the authentication procedure.
-
-### Authorization
-* Authorization is the process of allowing authenticated users access to resources by determining whether they have system access permissions. 
-* By giving or denying specific licenses to an authenticated user, authorization enables you to control access privileges.
 
 ---
 

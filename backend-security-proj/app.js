@@ -10,6 +10,8 @@ const bcrypt = require("bcrypt")
 
 // jwt
 const jwt = require("jsonwebtoken");
+// auth middleware
+const { verifyToken } = require("./middlewares/auth.js");
 
 // dotenv
 require('dotenv').config()
@@ -162,6 +164,17 @@ app.post('/signin', async (req, res) => {
 
         const response = new Response(500, false, err.message, null);
         return response.send(res);
+    }
+});
+
+app.get('/protected', verifyToken, async (req, res) => {
+    try{
+        const response = new Response(200, true, "Your are successfully authenticated!", null);
+        response.send(res);
+    }catch(err){
+        console.log(err);
+        const response = new Response(500, false, err.message, null);
+        response.send(res);
     }
 });
 
