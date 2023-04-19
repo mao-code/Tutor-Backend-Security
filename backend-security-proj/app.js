@@ -26,6 +26,7 @@ app.use(express.json());
 
 // Note: We skip the data validation here.
 
+// HTTP Method: GET, POST, PUT/PATCH, DELETE
 app.get('/', function (req, res) {
     // return will terminate all the function
     // if only res.send(), you still can execute the lines after it.
@@ -39,11 +40,11 @@ app.get('/testing/db', async (req, res) => {
     var sql = "SELECT * FROM Role";
 
     // node native promisify (more readable)
-    var data = await mysql.query(sql);
+    var [rows] = await mysql.query(sql);
     mysql.end(); // will close the whole connection
 
     res.send({
-        data: data
+        data: rows
     });
 });
 
@@ -58,7 +59,7 @@ app.post('/salting', async (req, res) => {
             
         const hashedPassword = await bcrypt.hash(password, salt);
         console.log('Hash: ', hashedPassword);
-        // information: [algorithm]$[cost]$[salt][hash]
+        // information: [algorithm]$[cost]$[salt]/[hash]
 
         const response = new Response(200, true, 'salting password!', {
             salt: salt,
@@ -85,10 +86,11 @@ app.post('/signup', async (req, res) => {
 
         // get roleId
         const sqlRole = `
-        SELECT id 
+        SELECT ID 
         FROM Role
         WHERE name = '${role}';`;
-        const roleId = (await mysql.query(sqlRole))[0].id;
+        var [rows] = await mysql.query(sqlRole);
+        const roleId = rows[0].ID;
 
         // generate refreshToken (later)
         const refreshToken = "test";
@@ -97,7 +99,7 @@ app.post('/signup', async (req, res) => {
         const sqlUser = `
         INSERT INTO User(name, gender, age, roleId)
         VALUES('${name}', '${gender}', ${age}, '${roleId}');`; 
-        let userId = (await mysql.query(sqlUser)).insertId; // get userid
+        let userId = (await mysql.query(sqlUser))[0].insertId; // get userid
 
         // insert user credential
         const sqlUserCredential = `
@@ -142,8 +144,8 @@ app.post('/signin', async (req, res) => {
         // get jwt secret for signature
         var secret =  process.env.JWT_SECRET;
 
-        // generate token (temporarily)
-        const token = jwt.sign(
+        // generate accessToken (temporarily)
+        const accessToken = jwt.sign(
             {
                 userId: userCredential.userId,
                 account: userCredential.account
@@ -154,8 +156,24 @@ app.post('/signin', async (req, res) => {
             }
         );
 
+        // generate refreshToken
+        const refreshToken = jwt.sign(
+            {
+                userId: userCredential.userId,
+                account: userCredential.account
+            },
+            secret,
+            {
+                expiresIn: "30d" 
+            }
+        );
+
+        // add new refreshToken to DB
+
+        
         const response = new Response(200, true, "Sign in successfully!", {
-            token: token
+            accessToken: accessToken,
+            refreshToken: refreshToken
         });
         return response.send(res);
 
@@ -170,6 +188,42 @@ app.post('/signin', async (req, res) => {
 app.get('/protected', verifyToken, async (req, res) => {
     try{
         const response = new Response(200, true, "Your are successfully authenticated!", null);
+        response.send(res);
+    }catch(err){
+        console.log(err);
+        const response = new Response(500, false, err.message, null);
+        response.send(res);
+    }
+});
+
+app.post('/refresh', async (req, res) => {
+    try{
+        // get refreshtoken
+        const { refreshToken } = req.body; 
+
+        const secret = process.env.JWT_SECRET
+
+        // verify refreshtoken
+        const decoded = jwt.verify(refreshToken, secret);
+        
+        // compare db refresh token (second protection)
+        // if resignin, hacker cannot use
+
+        // sign a new accesstoken
+        const newAccessToken = jwt.sign(
+            {
+                userId: decoded.userId,
+                account: decoded.account
+            },
+            secret,
+            {
+                expiresIn: "5m" 
+            }
+        );
+
+        const response = new Response(200, true, "Your are successfully refresh your token!", {
+            newAccessToken: newAccessToken
+        });
         response.send(res);
     }catch(err){
         console.log(err);

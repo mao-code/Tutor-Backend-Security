@@ -11,7 +11,7 @@ const verifyToken = (req, res, next) => {
     var token = req.headers["authorization"];
 
     if (!token) {
-        const response = new Response(500, false, "A token is required for authentication", null);
+        const response = new Response(401, false, "A token is required for authentication", null);
         return response.send(res);
     }
     token = token.replace("Bearer ", "");
@@ -20,13 +20,13 @@ const verifyToken = (req, res, next) => {
         const decoded = jwt.verify(token, config.JWT_SECRET);
         req.userContext = decoded;
     } catch (err) {
-        const response = new Response(500, false, "Invalid token", null);
+        const response = new Response(403, false, "Invalid token", null);
         return response.send(res);
     }
 
     // go to next middleware
     return next();
-  };
+};
   
 module.exports = {
     verifyToken: verifyToken
