@@ -28,6 +28,18 @@ const verifyToken = (req, res, next) => {
     return next();
 };
   
+const verifyRole = (acceptedRoles) => (req, res, next) => {
+    var role = req.userContext.role; // after verify token
+    if(!acceptedRoles.includes(role))
+    {
+        const response = new Response(403, false, "Unauthorized!", null);
+        return response.send(res);
+    }
+
+    return next();
+}
+
 module.exports = {
-    verifyToken: verifyToken
+    verifyToken: verifyToken,
+    verifyRole: verifyRole
 };

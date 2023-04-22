@@ -11,7 +11,7 @@ const bcrypt = require("bcrypt")
 // jwt
 const jwt = require("jsonwebtoken");
 // auth middleware
-const { verifyToken } = require("./middlewares/auth.js");
+const { verifyToken, verifyRole } = require("./middlewares/auth.js");
 
 // dotenv
 require('dotenv').config()
@@ -29,28 +29,7 @@ app.use(express.json());
 app.use(cors());
 
 // Note: We skip the data validation here.
-
 // HTTP Method: GET, POST, PUT/PATCH, DELETE
-app.get('/', function (req, res) {
-    // return will terminate all the function
-    // if only res.send(), you still can execute the lines after it.
-    return res.send({
-        message: 'Hello World'
-    });
-});
-
-// testing DB
-app.get('/testing/db', async (req, res) => {
-    var sql = "SELECT * FROM Role";
-
-    // node native promisify (more readable)
-    var [rows] = await mysql.query(sql);
-    mysql.end(); // will close the whole connection
-
-    res.send({
-        data: rows
-    });
-});
 
 app.post('/salting', async (req, res) => {
     try{
@@ -97,7 +76,7 @@ app.post('/signup', async (req, res) => {
         const roleId = rows[0].ID;
 
         // generate refreshToken (later)
-        const refreshToken = "test";
+        const refreshToken = "";
 
         // insert user
         const sqlUser = `
@@ -149,10 +128,20 @@ app.post('/signin', async (req, res) => {
         var secret =  process.env.JWT_SECRET;
 
         // generate accessToken (temporarily)
+        sql = `
+        SELECT r.name AS role
+        FROM User u
+        INNER JOIN Role r
+        ON u.roleId = r.ID
+        WHERE u.ID = ${userCredential.userId}
+        `;
+        var [rows] = await mysql.query(sql);
+        var role = rows[0].role
         const accessToken = jwt.sign(
             {
                 userId: userCredential.userId,
                 account: userCredential.account,
+                role: role,
                 issuat: Date.now()
             },
             secret,
@@ -166,6 +155,7 @@ app.post('/signin', async (req, res) => {
             {
                 userId: userCredential.userId,
                 account: userCredential.account,
+                role: role,
                 issuat: Date.now()
             },
             secret,
@@ -196,17 +186,6 @@ app.post('/signin', async (req, res) => {
     }
 });
 
-app.get('/protected', verifyToken, async (req, res) => {
-    try{
-        const response = new Response(200, true, "Your are successfully authenticated!", null);
-        response.send(res);
-    }catch(err){
-        console.log(err);
-        const response = new Response(500, false, err.message, null);
-        response.send(res);
-    }
-});
-
 app.post('/refresh', async (req, res) => {
     try{
         // get refreshtoken
@@ -232,10 +211,21 @@ app.post('/refresh', async (req, res) => {
         }
         
         // sign a new accesstoken
+        sql = `
+        SELECT r.name AS role
+        FROM User u
+        INNER JOIN Role r
+        ON u.roleId = r.ID
+        WHERE u.ID = ${userCredential.userId}
+        `;
+        var [rows] = await mysql.query(sql);
+        var role = rows[0].role
         const newAccessToken = jwt.sign(
             {
                 userId: decoded.userId,
-                account: decoded.account
+                account: decoded.account,
+                role: role,
+                issuat: Date.now()
             },
             secret,
             {
@@ -251,6 +241,31 @@ app.post('/refresh', async (req, res) => {
         console.log(err);
         const response = new Response(500, false, err.message, null);
         return response.send(res);
+    }
+});
+
+app.get('/protected/token', verifyToken, async (req, res) => {
+    try{
+        const response = new Response(200, true, "Your are successfully authenticated (token)!", null);
+        response.send(res);
+    }catch(err){
+        console.log(err);
+        const response = new Response(500, false, err.message, null);
+        response.send(res);
+    }
+});
+
+app.get('/protected/token/role', 
+verifyToken,
+verifyRole(["professor", "teaching assistant"]), 
+async (req, res) => {
+    try{
+        const response = new Response(200, true, "Your are successfully authenticated (token and role)!", null);
+        response.send(res);
+    }catch(err){
+        console.log(err);
+        const response = new Response(500, false, err.message, null);
+        response.send(res);
     }
 });
 
