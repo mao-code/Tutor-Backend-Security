@@ -12,18 +12,15 @@ We will build a backend APP for security practicing and a simple frontend to sim
 
 ## W2
 * Password hash salting
-* JWT
-* RBAC concept
+* JWT (Access & Refresh token)
+
+## W3 
+* RBAC
 * Build simple frontend
 
-## W3 (TBA)
-* Pratice JWT (Access & Refresh token)
-* Email validation 
-* RBAC practice
-
 ## W4 (TBA)
+* Email validation 
 * Combine all the security function
-* Improve structure with MVCS structure and apply router
 * Description of the project
 
 # Code

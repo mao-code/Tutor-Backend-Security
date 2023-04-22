@@ -89,12 +89,10 @@ alt="jwt"></img>
 
 <img
 width="500px"
-src="./images/ACT-RFT.png"
+src="./images/RBAC_1.png"
 alt="act-rft"></img>
 
 ---
-
-## RBAC
 
 # :books: Resources
 * [mysql2](https://openbase.com/js/mysql2)
