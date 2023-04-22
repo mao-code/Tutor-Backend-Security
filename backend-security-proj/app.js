@@ -16,6 +16,9 @@ const { verifyToken } = require("./middlewares/auth.js");
 // dotenv
 require('dotenv').config()
 
+// CORS
+var cors = require('cors')
+
 // models
 const Response = require("./models/Response.js");
 
@@ -23,6 +26,7 @@ const port = process.env.PORT || 3000;
 
 // automatically parse incoming JSON into JS object which you can access on req.body
 app.use(express.json());
+app.use(cors());
 
 // Note: We skip the data validation here.
 
@@ -148,11 +152,12 @@ app.post('/signin', async (req, res) => {
         const accessToken = jwt.sign(
             {
                 userId: userCredential.userId,
-                account: userCredential.account
+                account: userCredential.account,
+                issuat: Date.now()
             },
             secret,
             {
-                expiresIn: "5m" 
+                expiresIn: "5m"
             }
         );
 
@@ -160,7 +165,8 @@ app.post('/signin', async (req, res) => {
         const refreshToken = jwt.sign(
             {
                 userId: userCredential.userId,
-                account: userCredential.account
+                account: userCredential.account,
+                issuat: Date.now()
             },
             secret,
             {
@@ -169,7 +175,12 @@ app.post('/signin', async (req, res) => {
         );
 
         // add new refreshToken to DB
-
+        sql = `
+        UPDATE UserCredential
+        SET refreshToken = '${refreshToken}'
+        WHERE ID = ${userCredential.ID}
+        `;
+        await mysql.query(sql);
         
         const response = new Response(200, true, "Sign in successfully!", {
             accessToken: accessToken,
@@ -203,12 +214,23 @@ app.post('/refresh', async (req, res) => {
 
         const secret = process.env.JWT_SECRET
 
-        // verify refreshtoken
+        // verify refreshtoken (OK and not expired)
         const decoded = jwt.verify(refreshToken, secret);
         
         // compare db refresh token (second protection)
         // if resignin, hacker cannot use
-
+        var sql = `
+        SELECT refreshToken
+        FROM UserCredential
+        WHERE account = '${decoded.account}'
+        `;
+        [rows] = await mysql.query(sql);
+        if(!(rows[0].refreshToken == refreshToken))
+        {
+            const response = new Response(403, false, "Invalid refresh token!", null);
+            return response.send(res);
+        }
+        
         // sign a new accesstoken
         const newAccessToken = jwt.sign(
             {
@@ -224,11 +246,11 @@ app.post('/refresh', async (req, res) => {
         const response = new Response(200, true, "Your are successfully refresh your token!", {
             newAccessToken: newAccessToken
         });
-        response.send(res);
+        return response.send(res);
     }catch(err){
         console.log(err);
         const response = new Response(500, false, err.message, null);
-        response.send(res);
+        return response.send(res);
     }
 });
 
