@@ -17,16 +17,17 @@ const { verifyToken, verifyRole } = require("./middlewares/auth.js");
 require('dotenv').config()
 
 // CORS
-var cors = require('cors')
+const cors = require('cors')
 
 // models
 const Response = require("./models/Response.js");
 
 const port = process.env.PORT || 3000;
 
+app.use(cors());
+
 // automatically parse incoming JSON into JS object which you can access on req.body
 app.use(express.json());
-app.use(cors());
 
 // Note: We skip the data validation here.
 // HTTP Method: GET, POST, PUT/PATCH, DELETE
