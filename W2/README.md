@@ -89,7 +89,7 @@ alt="jwt"></img>
 
 <img
 width="500px"
-src="./images/RBAC_1.png"
+src="./images/ACT-RFT.png"
 alt="act-rft"></img>
 
 ---

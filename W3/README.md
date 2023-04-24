@@ -1,7 +1,6 @@
 # :pushpin: Outline
 * RBAC
 * Basic Frontend and connected with backend
-* Email validation
 
 # Download Packages
 * cors
@@ -17,7 +16,7 @@ CORS stands for Cross-Origin Resource Sharing. It is a security feature implemen
 * In RBAC, access control is based on the roles.
 * A role is a collection of permissions that define what actions a user can perform. For example, a role may define permissions to read or modify files, create new accounts, or change system settings.
 * There are 4 main RBAC model
-  * **RBACO — Core RBAC (We will use this)**
+  * **RBAC0 — Core RBAC (We will use this)**
   * RBAC1 — Hierarchal RBAC (RBAC0 + role hierarchies)
   * RBAC2 — Constraint RBAC (RBAC0 + Constraints)
   * RBAC3 — Combines RBAC (RBAC1 + RBAC 2)
