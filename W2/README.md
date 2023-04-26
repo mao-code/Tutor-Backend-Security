@@ -49,6 +49,7 @@ alt="salt-hash"></img>
 ---
 
 ## JWT (JSON Web Token)
+* [Why JWT?](https://easonchang0115.github.io/blogs/backEnd/2020/20200317_1.html#server-%E7%9A%84-cookie)
 * JWTs can be used to authenticate and authorize users and securely transmit information between parties.
 * A JWT is made up of <u>three parts: a header, a payload, and a signature.</u> </br>
 Here's an example JWT: </br>

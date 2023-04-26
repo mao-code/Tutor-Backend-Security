@@ -2,7 +2,7 @@
 Introduction and practice to basic backend security. Contents include JWT, Password Hashing, RBAC, etc.
 We will build a backend APP for security practicing and a simple frontend to simulate the client side.
 * JWT
-* Password Salting and Encryption
+* Password Salting and Hashing
 * RBAC
 * Email Validation
 
